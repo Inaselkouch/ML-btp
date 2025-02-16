@@ -191,29 +191,6 @@ class DecisionTree:
                 return self._predict_single(x, node.left)
             return self._predict_single(x, node.right)
 
-    def visualize_tree(self, filename="tree"):
-        def add_nodes_edges(dot, node, parent=None, edge_label=""):
-            if node is None:
-                return
-            node_id = str(id(node))
-            if node.is_leaf():
-                label = f"Leaf: {node.value}"
-                dot.node(node_id, label, shape="box")
-            else:
-                if self.feature_types[node.feature] == 'categorical':
-                    label = f"{self.feature_names[node.feature]} == {node.threshold}"
-                else:
-                    label = f"X[{node.feature}] <= {node.threshold}"
-                dot.node(node_id, label)
-            if parent:
-                dot.edge(parent, node_id, label=edge_label)
-            add_nodes_edges(dot, node.left, node_id, "True")
-            add_nodes_edges(dot, node.right, node_id, "False")
-
-        dot = Digraph()
-        add_nodes_edges(dot, self.root)
-        dot.render(filename, format="png", cleanup=True)
-
 
 
 
